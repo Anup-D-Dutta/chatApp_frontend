@@ -101,6 +101,9 @@ function login() {
             });
         } catch (error) {
             const message = error.response?.data?.message || "Something went wrong";
+            if (message.includes("username")) {
+                username.setError("Username already exists");
+            }
             toast.error(String(message), { id: toastId });
         }
         finally {
@@ -123,50 +126,6 @@ function login() {
 
             }}
         >
-
-            {/* <AppBar position='static' sx={{ bgcolor: 'rgba(0,0,0,0.8)' }}>
-                <Toolbar>
-
-                    <Typography sx={{
-                        fontSize: '1.8rem', display: { sm: 'block' }
-                    }}>
-                        <span style={{
-                            fontWeight: '600',
-                            fontSize: '2rem',
-                            background: 'linear-gradient(16deg, #4b90ff, #ff5546)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent'
-                        }}>
-                            T
-                        </span>
-                        alk
-                        <span
-                            style={{
-                                fontWeight: '600',
-                                fontSize: '2rem',
-                                background: 'linear-gradient(16deg, #4b90ff, #ff5546)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent'
-                            }}
-                        >
-                            S
-                        </span>
-                        ync
-                        <img style={{
-                            margin: '0 0 8px 5px', width: '2rem', filter: 'invert(15%) sepia(0%) saturate(107%) hue-rotate(130deg) brightness(95%) contrast(80%)'
-                        }}
-                            src={assets.chat_icon2} alt="" />
-                    </Typography>
-
-                    <Box sx={{ position: 'absolute', right: '1rem', }}>
-
-                        <Button sx={{ width: '5rem', color: 'white', bgcolor: 'rgba(0,0,0,0.1)', backdropFilter: 'blur(5px)', border: '0.5px solid gray', borderRadius: '0.5rem' }} variant='text' onClick={toggleLogin} disabled={isLoading}>SignUp</Button>
-
-                    </Box>
-
-                </Toolbar>
-            </AppBar> */}
-
 
             <Container component={"main"} maxWidth="xs"
                 sx={{
