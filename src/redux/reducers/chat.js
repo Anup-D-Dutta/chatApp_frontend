@@ -95,7 +95,7 @@
 
 
 import { createSlice } from '@reduxjs/toolkit';
-import { NEW_MESSAGE_ALERT } from '../../../../server/constants/event';
+import { NEW_MESSAGE_ALERT } from '../../constants/event';
 
 // Local storage helper
 const getOrSaveFromStorage = ({ key, get, value }) => {
