@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { userNotExists } from '../../redux/reducers/auth';
 // import SearchDialog from '../specific/Search'
-import { server } from '../../constants/config';
+import { API_URL } from '../../constants/config';
 import { setIsMobile, setIsNotification, setIsSearch, setIsNewGroup } from '../../redux/reducers/misc';
 import { resetNotification } from '../../redux/reducers/chat';
 import { assets } from '../../assets/assets';
@@ -64,7 +64,7 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      const { data } = await axios.get(`${server}/api/v1/user/logout`,
+      const { data } = await axios.get(`${API_URL}/api/v1/user/logout`,
         { withCredentials: true });
 
       dispatch(userNotExists())
