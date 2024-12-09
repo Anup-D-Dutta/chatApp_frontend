@@ -100,7 +100,7 @@ function login() {
                 id: toastId
             });
         } catch (error) {
-            const message = error.response?.data?.message || "Something went wrong";
+            const message = (error.response?.data?.message || "Something went wrong").toString();
             if (message.includes("username")) {
                 username.setError("Username already exists");
             }

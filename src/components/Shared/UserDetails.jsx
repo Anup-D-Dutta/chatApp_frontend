@@ -1,35 +1,3 @@
-// import React from 'react'
-// import { Box, Typography } from '@mui/material';
-
-
-// const UserDetails = ({message, user}) => {
-
-//     const { sender } = message;
-//     const sameSender = sender?._id === user?._id;
-
-
-//     return (
-//         <div
-//             style={{
-//                 backgroundColor: 'red',
-//                 color: 'white',
-//                 borderRadius: '0.5rem',
-//                 width: '100%',
-//                 padding: '0.6rem'
-//             }}
-//         >
-
-//             {/* Sender Name */}
-//             {!sameSender && <Typography
-//                 color={'#2694ab'}
-//                 fontWeight={'600'}
-//                 variant={"caption"}
-//             >{sender.name}</Typography>}
-//         </div>
-//     )
-// }
-
-// export default UserDetails
 
 
 import React from 'react';

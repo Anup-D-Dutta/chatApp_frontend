@@ -2,7 +2,7 @@ import React from 'react'
 import { Line, Doughnut } from 'react-chartjs-2'
 import { CategoryScale, Chart as ChartJS, Tooltip, Filler, LinearScale, PointElement, LineElement, ArcElement, Legend, plugins } from 'chart.js'
 import { red, redLight, oranges } from '../../constants/color';
-import { getLast7days } from '../../lib/features'
+import { getLast7days } from '../../lib/Features'
 
 ChartJS.register(Tooltip, CategoryScale, LinearScale, LineElement, PointElement, Filler, ArcElement, Legend);
 
