@@ -1,29 +1,67 @@
-import {createContext, useContext, useMemo } from "react";
-import io from "socket.io-client"
-import { BACKEND_URL } from "../constants/config";
+// import {createContext, useContext, useMemo } from "react";
+// import io from "socket.io-client"
+// import { BACKEND_URL } from "../constants/config";
 
+
+// const SocketContext = createContext();
+
+// const getSocket= () =>  useContext(SocketContext);
+
+// const SocketProvider = ({children}) => {
+
+// const socket = useMemo(() => 
+//     io(BACKEND_URL, 
+//         {withCredentials: true}),
+//         []
+//     );
+
+
+//     return(
+//         <SocketContext.Provider value={socket}>
+//             {children}
+//         </SocketContext.Provider>
+//     )
+// }
+
+// export{SocketProvider, getSocket}
+
+
+
+import { createContext, useContext, useMemo, useEffect } from "react";
+import io from "socket.io-client";
+import { BACKEND_URL } from "../constants/config";
 
 const SocketContext = createContext();
 
-const getSocket= () =>  useContext(SocketContext);
+const getSocket = () => useContext(SocketContext);
 
-const SocketProvider = ({children}) => {
+const SocketProvider = ({ children }) => {
+    const socket = useMemo(() => {
+        const socketInstance = io(BACKEND_URL, {
+            withCredentials: true,
+            transports: ['websocket'], // Ensure WebSocket transport is preferred
+        });
+        return socketInstance;
+    }, [BACKEND_URL]);
 
-const socket = useMemo(() => 
-    io(BACKEND_URL, 
-        {withCredentials: true}),
-        []
-    );
+    useEffect(() => {
+        socket.on('connect_error', (error) => {
+            console.error('Socket connection error:', error);
+        });
 
+        return () => {
+            socket.disconnect(); // Clean up socket connection
+        };
+    }, [socket]);
 
-    return(
+    return (
         <SocketContext.Provider value={socket}>
             {children}
         </SocketContext.Provider>
-    )
-}
+    );
+};
 
-export{SocketProvider, getSocket}
+export { SocketProvider, getSocket };
 
 
 
