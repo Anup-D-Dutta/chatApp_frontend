@@ -5,7 +5,7 @@ import { VisuallyHiddenInput } from '../components/styles/styleComponents';
 import { useFileHandler, useInputValidation, useStrongPassword } from '6pp';
 import { usernameValidator } from '../utils/validators';
 import axios from 'axios';
-import { server } from '../constants/config';
+import { API_URL } from '../constants/config';
 import { useDispatch } from 'react-redux';
 import { userExists } from '../redux/reducers/auth';
 import toast from 'react-hot-toast';
@@ -48,7 +48,7 @@ function login() {
         }
 
         try {
-            const { data } = await axios.post(`${server}/api/v1/user/login`, {
+            const { data } = await axios.post(`${API_URL}/api/v1/user/login`, {
                 username: username.value,
                 password: password.value,
             },
@@ -90,7 +90,7 @@ function login() {
         }
 
         try {
-            const { data } = await axios.post(`${server}/api/v1/user/new`,
+            const { data } = await axios.post(`${API_URL}/api/v1/user/new`,
                 formData,
                 config,
             )

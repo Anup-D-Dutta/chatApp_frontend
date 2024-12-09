@@ -29,7 +29,7 @@
 
 import { createContext, useContext, useMemo, useEffect } from "react";
 import io from "socket.io-client";
-import { BACKEND_URL } from "../constants/config";
+import { API_URL } from "../constants/config";
 
 const SocketContext = createContext();
 
@@ -37,12 +37,12 @@ const getSocket = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
     const socket = useMemo(() => {
-        const socketInstance = io(BACKEND_URL, {
+        const socketInstance = io(API_URL, {
             withCredentials: true,
             transports: ['websocket'], // Ensure WebSocket transport is preferred
         });
         return socketInstance;
-    }, [BACKEND_URL]);
+    }, [API_URL]);
 
     useEffect(() => {
         socket.on('connect_error', (error) => {
