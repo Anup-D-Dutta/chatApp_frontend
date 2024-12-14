@@ -38,7 +38,7 @@ const Notifications = () => {
       else{
         toast.error(res.data?.error || "somthing went wrong")
       }
-      
+
     } catch (error) {
       toast.error("somthing went wrong")
 
@@ -142,4 +142,3 @@ const NotificationItem = memo(({ sender, _id, handler }) => {
 });
 
 export default Notifications
-
