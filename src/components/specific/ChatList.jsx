@@ -7,7 +7,7 @@ import { Stack, TextField } from '@mui/material';
 import ChatItem from '../Shared/ChatItem';
 
 const ChatList = ({
-    bg = 'rgba(0, 0, 0, 0.4)',
+    bg = 'rgba(0, 0, 0, 0.9)',
     // backgroundImage: '',
     w = '100%',
     chats = [],
@@ -23,6 +23,7 @@ const ChatList = ({
             direction="column"
             overflow="auto"
             height="100%"
+            padding='0.4rem'
             borderRight={'1px solid gray'}
             sx={{
                 backdropFilter: 'blur(5px)',

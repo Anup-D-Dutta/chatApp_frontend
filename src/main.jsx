@@ -13,11 +13,12 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}> {/* Provide the Redux store here */}
       <HelmetProvider>
         <CssBaseline />
-        <div style={{backgroundImage: `url(${assets.bg_login3})`, backgroundSize: 'cover'}} onContextMenu={(e) => e.preventDefault()}>
+        {/* <div style={{backgroundImage: `url(${assets.bg_login3})`, backgroundSize: 'cover'}} onContextMenu={(e) => e.preventDefault()}> */}
+        <div onContextMenu={(e) => e.preventDefault()}>
           <App />
         </div>
       </HelmetProvider>
     </Provider>
-  </StrictMode>,
+  </StrictMode>
 );
 

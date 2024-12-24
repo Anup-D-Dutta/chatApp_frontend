@@ -28,48 +28,33 @@ const MessageComponents = ({ message, user }) => {
         >
             {/* Sender Name */}
             {!sameSender && sender && (
-                // <Typography
-                //     color={'#2694ab'}
-                //     fontWeight={'600'}
-                //     variant={"caption"}
-                // >
-                //     {sender.name}
-                //     {/* {sender.avatar} */}
+                <Typography
+                    color={'#2694ab'}
+                    fontWeight={'600'}
+                    variant={"caption"}
+                >
+                    {sender.name}
+                    {/* {sender.avatar} */}
 
-                // </Typography>
+                </Typography>
                 // <Avatar
                 //     sx={{
                 //         width: '25px',
                 //         height: '25px',
-                //         // margin: '10px, 10px, 20px, 0'
-                //         marginBottom: '0.4rem'
+                //         marginBottom: '0.4rem',
                 //     }}
-                //     // src={sender.avatar}
-                //     src={sender.avatar || ''}
+                //     src={typeof sender.avatar === 'string' ? sender.avatar : ''}
                 //     alt={sender.name}
                 // >
-                //     {/* {!sender.avatar && sender.name && sender.name[0].toUpperCase()} */}
                 //     {!sender.avatar && sender.name && sender.name[0].toUpperCase()}
-
                 // </Avatar>
-                <Avatar
-                    sx={{
-                        width: '25px',
-                        height: '25px',
-                        marginBottom: '0.4rem',
-                    }}
-                    src={typeof sender.avatar === 'string' ? sender.avatar : ''}
-                    alt={sender.name}
-                >
-                    {!sender.avatar && sender.name && sender.name[0].toUpperCase()}
-                </Avatar>
 
             )}
             {/* Message box */}
             <Box
                 sx={{
-                    backgroundColor: sameSender ? '#FF6968' : 'rgba(0,0,0,0.2)',
-                    backdropFilter: 'blur(15px)',
+                    backgroundColor: sameSender ? '#FF6968' : '#363636',
+                    // backdropFilter: 'blur(10px)',
                     // bgcolor: 'red',
                     // padding: '0.4rem',
                     borderRadius: '0.5rem',

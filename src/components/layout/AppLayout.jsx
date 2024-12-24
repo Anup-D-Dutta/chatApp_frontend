@@ -159,8 +159,8 @@ const AppLayout = () => (WrappedComponent) => {
                             sx={{
                                 display: { xs: 'none', md: 'block' },
                                 padding: '2rem',
-                                bgcolor: 'rgba(0,0,0,0.4)',
-                                backdropFilter: 'blur(5px)',
+                                bgcolor: 'rgba(0,0,0,0.9)',
+                                // backdropFilter: 'blur(5px)',
                                 boxShadow: 4,
                             }}
                         >

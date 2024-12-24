@@ -124,7 +124,7 @@ const Chat = ({ chatId, user = { currentUser } }) => {
         boxSizing={'border-box'}
         padding={'1rem'}
         spacing={'1rem'}
-        bgcolor={'rgba(0, 0, 0, 0.4)'}
+        bgcolor={'rgba(0, 0, 0, 0.9)'}
         borderRight={'1px solid gray'}
         height={'90%'}
         sx={{
@@ -156,13 +156,14 @@ const Chat = ({ chatId, user = { currentUser } }) => {
         style={{ height: '10%' }}
         onSubmit={submitHandler}
       >
+        {/* Message container */}
         <Stack
           direction={'row'}
           height={'100%'}
           padding={'0.8rem'}
           alignItems={'center'}
           position={'relative'}
-          bgcolor={'rgba(0, 0, 0, 0.4)'}
+          bgcolor={'rgba(0, 0, 0, 0.9)'}
           sx={{
             borderTop: '1px solid gray',
             borderRight: '1px solid gray',

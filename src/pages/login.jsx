@@ -116,8 +116,8 @@ function login() {
 
         <div
             style={{
-                background: 'rgba(0, 0, 0, 1)',
-                backgroundImage: `url(${assets.bg_login1})`,
+                background: 'rgba(0, 0, 0, 0.9)',
+                // backgroundImage: `url(${assets.bg_login1})`,
                 backgroundSize: 'cover',
                 // backgroundPosition: 'center',
                 // backgroundRepeat: 'no-repeat',
@@ -143,14 +143,14 @@ function login() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        border: '1px solid black',
+                        border: '1px solid gray',
                         borderRadius: '1rem',
                         color: 'white',
                         // height: '100vh',
                         // background: 'rgba(0, 0, 0, 0.5)',
 
                         backgroundColor: 'rgba(0,0,0,0.2)', // Transparent background color
-                        backdropFilter: 'blur(3px)', // Apply blur effect
+                        // backdropFilter: 'blur(3px)', // Apply blur effect
                     }}
                 >
 
@@ -229,163 +229,164 @@ function login() {
 
                         // Sign Up 
                         <> {/* This Symbole is known as fargments*/}
-                            <ArrowBackIcon title={'Back'} sx={{position: 'absolute', top: '15px', left: '15px' ,cursor: 'pointer', }} onClick={toggleLogin} disabled={isLoading} />
-                            {/* <Tooltip title='back' disabled={isLoading} /><IconButton onClick={toggleLogin} ><ArrowBackIcon /></IconButton>  <Tooltip /> */}
-                    <Typography variant='h4' textAlign={'center'}>Sign Up</Typography>
-                    <form
-                        style={{
-                            width: '100%',
-                            // height: '100vh'
-                            // marginTop: '1rem',
-                        }}
+                            <Tooltip title={'Back to Login'}>
+                                <ArrowBackIcon sx={{ position: 'absolute', top: '15px', left: '15px', cursor: 'pointer', }} onClick={toggleLogin} disabled={isLoading} />
+                            </Tooltip>
+                            <Typography variant='h4' textAlign={'center'}>Sign Up</Typography>
+                            <form
+                                style={{
+                                    width: '100%',
+                                    // height: '100vh'
+                                    // marginTop: '1rem',
+                                }}
 
-                        onSubmit={handleSignUp}
-                    >
-                        <Stack position={'relative'} width={'10rem'} margin={'auto'}>
+                                onSubmit={handleSignUp}
+                            >
+                                <Stack position={'relative'} width={'10rem'} margin={'auto'}>
 
-                            <Avatar sx={{ bgcolor: 'rgba(0,0,0,0.4)', border: '2px solid blue ', width: '10rem', height: '10rem', objectFit: 'contain' }} src={avatar.preview} />
+                                    <Avatar sx={{ bgcolor: 'rgba(0,0,0,0.4)', border: '2px solid blue ', width: '10rem', height: '10rem', objectFit: 'contain' }} src={avatar.preview} />
 
-                            <IconButton sx={{ position: 'absolute', bottom: '0', right: '1.8rem', color: 'white', backgroundColor: 'white', bgcolor: 'rgba(0,0,0,0.5)', ':hover': { bgcolor: 'rgba(0,0,0,0.7)' } }} component='label'>
-                                <>
-                                    <CameraAltIcon />
-                                    <VisuallyHiddenInput type='file' onChange={avatar.changeHandler} />
-                                </>
-                            </IconButton>
-                        </Stack>
+                                    <IconButton sx={{ position: 'absolute', bottom: '0', right: '1.8rem', color: 'white', backgroundColor: 'white', bgcolor: 'rgba(0,0,0,0.5)', ':hover': { bgcolor: 'rgba(0,0,0,0.7)' } }} component='label'>
+                                        <>
+                                            <CameraAltIcon />
+                                            <VisuallyHiddenInput type='file' onChange={avatar.changeHandler} />
+                                        </>
+                                    </IconButton>
+                                </Stack>
 
-                        {
-                            avatar.error && (
-                                <Typography m={'1rem auto'} width={'fit-content'} display={'block'} color={'error'} variant='caption'>
-                                    {avatar.error}
-                                </Typography>
-                            )
-                        }
+                                {
+                                    avatar.error && (
+                                        <Typography m={'1rem auto'} width={'fit-content'} display={'block'} color={'error'} variant='caption'>
+                                            {avatar.error}
+                                        </Typography>
+                                    )
+                                }
 
 
-                        <TextField
-                            required
-                            fullWidth
-                            label="Name"
-                            margin='normal'
-                            variant='outlined'
-                            value={name.value}
-                            onChange={name.changeHandler}
-                            sx={{
-                                border: 'none',
-                                borderBottom: '1px solid gray',
-                                outline: "none",
-                                // border: '1px solid gray',
-                                // borderRadius: '1rem',
-                                input: { color: 'white' },
-                                label: { color: 'white' },
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="Name"
+                                    margin='normal'
+                                    variant='outlined'
+                                    value={name.value}
+                                    onChange={name.changeHandler}
+                                    sx={{
                                         border: 'none',
+                                        borderBottom: '1px solid gray',
+                                        outline: "none",
+                                        // border: '1px solid gray',
+                                        // borderRadius: '1rem',
+                                        input: { color: 'white' },
+                                        label: { color: 'white' },
+                                        "& .MuiOutlinedInput-root": {
+                                            "& fieldset": {
+                                                border: 'none',
 
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            label="Bio"
-                            margin='normal'
-                            variant='outlined'
-                            value={bio.value}
-                            onChange={bio.changeHandler}
-                            sx={{
-                                border: 'none',
-                                borderBottom: '1px solid gray',
-                                outline: "none",
-                                // border: '1px solid gray',
-                                // borderRadius: '1rem',
-                                input: { color: 'white' },
-                                label: { color: 'white' },
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
+                                            },
+                                        },
+                                    }}
+                                />
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="Bio"
+                                    margin='normal'
+                                    variant='outlined'
+                                    value={bio.value}
+                                    onChange={bio.changeHandler}
+                                    sx={{
                                         border: 'none',
+                                        borderBottom: '1px solid gray',
+                                        outline: "none",
+                                        // border: '1px solid gray',
+                                        // borderRadius: '1rem',
+                                        input: { color: 'white' },
+                                        label: { color: 'white' },
+                                        "& .MuiOutlinedInput-root": {
+                                            "& fieldset": {
+                                                border: 'none',
 
-                                    },
-                                },
-                            }}
-                        />
-                        <TextField
-                            required
-                            fullWidth
-                            label="Username"
-                            margin='normal'
-                            variant='outlined'
-                            value={username.value}
-                            onChange={username.changeHandler}
-                            sx={{
-                                border: 'none',
-                                borderBottom: '1px solid gray',
-                                outline: "none",
-                                // border: '1px solid gray',
-                                // borderRadius: '1rem',
-                                input: { color: 'white' },
-                                label: { color: 'white' },
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
+                                            },
+                                        },
+                                    }}
+                                />
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="Username"
+                                    margin='normal'
+                                    variant='outlined'
+                                    value={username.value}
+                                    onChange={username.changeHandler}
+                                    sx={{
                                         border: 'none',
+                                        borderBottom: '1px solid gray',
+                                        outline: "none",
+                                        // border: '1px solid gray',
+                                        // borderRadius: '1rem',
+                                        input: { color: 'white' },
+                                        label: { color: 'white' },
+                                        "& .MuiOutlinedInput-root": {
+                                            "& fieldset": {
+                                                border: 'none',
 
-                                    },
-                                },
-                            }}
-                        />
+                                            },
+                                        },
+                                    }}
+                                />
 
-                        {
-                            username.error && (
-                                <Typography color='error' variant='caption'>
-                                    {username.error}
-                                </Typography>
-                            )
-                        }
+                                {
+                                    username.error && (
+                                        <Typography color='error' variant='caption'>
+                                            {username.error}
+                                        </Typography>
+                                    )
+                                }
 
-                        <TextField
-                            required
-                            fullWidth
-                            label="Password"
-                            type='password'
-                            margin='normal'
-                            variant='outlined'
-                            value={password.value}
-                            onChange={password.changeHandler}
-                            sx={{
-                                border: 'none',
-                                borderBottom: '1px solid gray',
-                                outline: "none",
-                                // border: '1px solid gray',
-                                // borderRadius: '1rem',
-                                input: { color: 'white' },
-                                label: { color: 'white' },
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label="Password"
+                                    type='password'
+                                    margin='normal'
+                                    variant='outlined'
+                                    value={password.value}
+                                    onChange={password.changeHandler}
+                                    sx={{
                                         border: 'none',
+                                        borderBottom: '1px solid gray',
+                                        outline: "none",
+                                        // border: '1px solid gray',
+                                        // borderRadius: '1rem',
+                                        input: { color: 'white' },
+                                        label: { color: 'white' },
+                                        "& .MuiOutlinedInput-root": {
+                                            "& fieldset": {
+                                                border: 'none',
 
-                                    },
-                                },
-                            }}
-                        />
+                                            },
+                                        },
+                                    }}
+                                />
 
-                        {
-                            password.error && (
-                                <Typography color='error' variant='caption'>
-                                    {password.error}
-                                </Typography>
-                            )
-                        }
+                                {
+                                    password.error && (
+                                        <Typography color='error' variant='caption'>
+                                            {password.error}
+                                        </Typography>
+                                    )
+                                }
 
-                        <Button sx={{ marginTop: '1rem' }} variant='contained' color='primary' type='submit' fullWidth disabled={isLoading}>Sign Up</Button>
+                                <Button sx={{ marginTop: '1rem' }} variant='contained' color='primary' type='submit' fullWidth disabled={isLoading}>Sign Up</Button>
 
-                        {/* <Typography textAlign={'center'} margin={'1rem'}>OR</Typography> */}
-                        {/* <Button sx={{ width: '0', height: '0' }} variant='text' onClick={toggleLogin} disabled={isLoading}>Login</Button> */}
-                    </form>
-                </>
+                                {/* <Typography textAlign={'center'} margin={'1rem'}>OR</Typography> */}
+                                {/* <Button sx={{ width: '0', height: '0' }} variant='text' onClick={toggleLogin} disabled={isLoading}>Login</Button> */}
+                            </form>
+                        </>
                     )}
-            </Paper>
-        </Container>
+                </Paper>
+            </Container>
         </div >
     )
 }

@@ -29,12 +29,12 @@ const ChatItem = ({
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 style={{
-                    // borderBottom: '0.1px solid gray',
                     display: 'flex',
                     gap: '1rem',
                     alignItems: 'center',
                     padding: '1rem',
-                    background: sameSender ? 'rgba(0,0,0,0.7)' : 'unset',
+                    borderRadius: '0.7rem',
+                    background: sameSender ? '#292929' : 'unset',
                     color: 'white',
                     position: 'relative',
                 }}>
