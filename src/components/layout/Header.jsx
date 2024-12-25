@@ -90,8 +90,6 @@ const Header = () => {
           sx={{
             bgcolor: 'rgba(0, 0, 0, 0.9)',
             backdropFilter: 'blur(5px)',
-            borderBottom: '1px solid gray'
-            // bgcolor: 'transparent'
           }}>
 
           <Toolbar>

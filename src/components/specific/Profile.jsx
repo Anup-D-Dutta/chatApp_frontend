@@ -12,7 +12,9 @@ const Profile = ({ user }) => {
                 bgcolor: 'rgba(0,0,0,0.1)', // Slightly transparent background inside the dialog
                 backdropFilter: 'blur(8px)', // Additional blur effect
                 borderRadius: 2,
-                height: '100%'
+                border: '1px solid #1F1F1F',
+                height: '100%',
+                padding: '2rem',
             }}
         >
             <Avatar

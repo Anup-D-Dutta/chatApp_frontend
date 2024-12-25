@@ -18,9 +18,11 @@ export const Link = styled(LinkComponent)`
 text-decoration: none;
 color: black;
 padding:1rem;
+margin-top: 0.2rem;
 &:hover{
 taxt-decoration:none;
-background-color: rgba(0,0,0,0.1);
+background-color: #363636;
+border-radius: 0.7rem;
 } 
 `;
 

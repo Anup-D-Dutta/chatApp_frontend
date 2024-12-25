@@ -33,7 +33,7 @@ const ChatItem = ({
                     gap: '1rem',
                     alignItems: 'center',
                     padding: '1rem',
-                    borderRadius: '0.7rem',
+                    borderRadius: '0.5rem',
                     background: sameSender ? '#292929' : 'unset',
                     color: 'white',
                     position: 'relative',
@@ -68,8 +68,8 @@ const ChatItem = ({
                             borderRadius: '50%',
                             backgroundColor: '#04b976',
                             position: 'absolute',
-                            top: '25%',
-                            right: '20rem',
+                            top: '30%',
+                            right: '19.5rem',
                             transform: 'translateY(-50%)',
                         }}
                     />

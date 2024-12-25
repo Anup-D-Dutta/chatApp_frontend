@@ -20,9 +20,7 @@ const MessageComponents = ({ message, user }) => {
                 alignSelf: sameSender ? 'flex-end' : 'flex-start',
                 // backgroundColor: 'rgba(0,0,0,4)',
                 color: 'white',
-                // borderRadius: '0.5rem',
                 width: 'fit-content',
-                // padding: '0.6rem',
                 marginBottom: '0.5rem' // Add margin for spacing
             }}
         >
@@ -54,9 +52,6 @@ const MessageComponents = ({ message, user }) => {
             <Box
                 sx={{
                     backgroundColor: sameSender ? '#FF6968' : '#363636',
-                    // backdropFilter: 'blur(10px)',
-                    // bgcolor: 'red',
-                    // padding: '0.4rem',
                     borderRadius: '0.5rem',
                     textAlign: sameSender ? 'right' : 'left'
                 }}>

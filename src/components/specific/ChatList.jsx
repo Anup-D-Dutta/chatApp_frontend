@@ -2,7 +2,7 @@
 
 
 
-import React from 'react';
+import { React, useState, useRef } from 'react';
 import { Stack, TextField } from '@mui/material';
 import ChatItem from '../Shared/ChatItem';
 
@@ -15,22 +15,41 @@ const ChatList = ({
     onlineUsers = [],
     newMessagesAlert = [{ chatId: "", count: 0 }],
     handleDeleteChat,
+
 }) => {
+    const [isScrolling, setIsScrolling] = useState(false);
+    const scrollTimeout = useRef(null);
+
+    const handleScroll = () => {
+        setIsScrolling(true);
+
+        // Clear timeout if it's already set
+        if (scrollTimeout.current) {
+            clearTimeout(scrollTimeout.current);
+        }
+
+        // Set a timeout to hide the scrollbar after 1.5 seconds of inactivity
+        scrollTimeout.current = setTimeout(() => {
+            setIsScrolling(false);
+        }, 1500);
+    };
     return (
         <Stack
+            onScroll={handleScroll}
             bgcolor={bg}
             width={w}
             direction="column"
             overflow="auto"
             height="100%"
             padding='0.4rem'
-            borderRight={'1px solid gray'}
+            borderRight={'1px solid #2C2C2C'}
             sx={{
                 backdropFilter: 'blur(5px)',
                 overflow: 'auto',
                 height: '100%',
                 '&::-webkit-scrollbar': {
-                    width: '4px',
+                    // width: '4px',
+                    width: isScrolling ? '3px' : '0px',
                 },
                 '&::-webkit-scrollbar-thumb': {
                     backgroundColor: 'gray',

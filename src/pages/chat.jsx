@@ -113,6 +113,24 @@ const Chat = ({ chatId, user = { currentUser } }) => {
   }, [oldMessages]);
 
 
+  // (Chat Scrollbar) - When we start scrolling then show scrollbar otherwise hide
+
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeout = useRef(null);
+
+  const handleScroll = () => {
+    setIsScrolling(true);
+
+    // Clear timeout if it's already set
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    // Set a timeout to hide the scrollbar after 1.5 seconds of inactivity
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 1500);
+  };
 
 
   return chatDetails.isLoading ? (
@@ -120,21 +138,20 @@ const Chat = ({ chatId, user = { currentUser } }) => {
   ) : (
     <Fragment>
       <Stack
+        onScroll={handleScroll}
         ref={containerRef}
         boxSizing={'border-box'}
         padding={'1rem'}
         spacing={'1rem'}
         bgcolor={'rgba(0, 0, 0, 0.9)'}
-        borderRight={'1px solid gray'}
+        borderRight={'1px solid #2C2C2C'}
         height={'90%'}
         sx={{
-          // backgroundImage: `url(${assets.bg_chat3})`,
-          // backgroundSize: 'cover',
           backdropFilter: 'blur(5px)',
           overflowX: 'hidden',
           overflowY: 'auto',
           '&::-webkit-scrollbar': {
-            width: '4px',
+            width: isScrolling ? '3px' : '0px',
           },
           '&::-webkit-scrollbar-thumb': {
             backgroundColor: 'gray',
@@ -165,8 +182,8 @@ const Chat = ({ chatId, user = { currentUser } }) => {
           position={'relative'}
           bgcolor={'rgba(0, 0, 0, 0.9)'}
           sx={{
-            borderTop: '1px solid gray',
-            borderRight: '1px solid gray',
+            borderTop: '1px solid #2C2C2C',
+            borderRight: '1px solid #2C2C2C',
             backdropFilter: 'blur(5px)'
           }}
         >
@@ -183,7 +200,7 @@ const Chat = ({ chatId, user = { currentUser } }) => {
             <AttachFileIcon />
           </IconButton>
 
-          <InputBox placeholder='Type Message Here...' value={message} onChange={(e) => setMessage(e.target.value)} />
+          <InputBox sx={{ border: 'none' }} placeholder='Type Message Here...' value={message} onChange={(e) => setMessage(e.target.value)} />
 
           <IconButton type='submit' sx={{ color: 'white', marginLeft: '0.5rem', padding: '0.5rem', '&:hover': { background: 'gray', rotate: '-90deg' } }}>
             <SendIcon />
