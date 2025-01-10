@@ -25,15 +25,12 @@ const FileMenu = ({ anchorEl, chatId }) => {
   //   ref.current.click();
   // }
 
-  console.log("Sending chatId 1 :", chatId); // Check the value here before sending it in the request
-
 
   const selectImage = () => imageRef.current?.click();
 
 
   const fileChangeHandler = async(e, key) => {
 
-    console.log("Sending chatId 2 :", chatId); // Check the value here before sending it in the request
 
     const files = Array.from(e.target.files);
 

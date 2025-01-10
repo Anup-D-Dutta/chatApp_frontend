@@ -19,8 +19,11 @@ const MessageComponents = ({ message, user }) => {
             style={{
                 alignSelf: sameSender ? 'flex-end' : 'flex-start',
                 // backgroundColor: 'rgba(0,0,0,4)',
+                // width: '15rem',
                 color: 'white',
-                width: 'fit-content',
+                // width: 'fit-content',
+                wordBreak: 'break-word', // Ensure long words break to the next line
+                maxWidth: '20rem', // Set a maximum width for the text box
                 marginBottom: '0.5rem' // Add margin for spacing
             }}
         >
@@ -53,7 +56,9 @@ const MessageComponents = ({ message, user }) => {
                 sx={{
                     backgroundColor: sameSender ? '#FF6968' : '#363636',
                     borderRadius: '0.5rem',
-                    textAlign: sameSender ? 'right' : 'left'
+                    // textAlign: sameSender ? 'right' : 'left'
+                    textAlign: 'left'
+
                 }}>
                 {content && <Typography sx={{ padding: '0.4rem' }}>{content}</Typography>}
 

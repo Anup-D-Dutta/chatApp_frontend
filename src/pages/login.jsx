@@ -116,7 +116,8 @@ function login() {
 
         <div
             style={{
-                background: 'rgba(0, 0, 0, 0.9)',
+                // background: 'rgba(0, 0, 0, 0.9)',
+                background: '#2E3135',
                 // backgroundImage: `url(${assets.bg_login1})`,
                 backgroundSize: 'cover',
                 // backgroundPosition: 'center',
@@ -157,7 +158,7 @@ function login() {
                     {isLogin ? (
                         <Box> {/* <> </> This Symbole is known as fargments*/}
                             {/* <img src={assets.chat_icon2} /> */}
-                            <Typography color='white' variant='h4' textAlign={'center'}>Login</Typography>
+                            <Typography color='white' variant='h4' textAlign={'center'} fontWeight={'600'}>Login</Typography>
                             <form
                                 style={{
                                     marginTop: '1rem',
@@ -219,8 +220,14 @@ function login() {
 
                                 <Button sx={{ marginTop: '1rem' }} variant='contained' color='primary' type='submit' fullWidth disabled={isLoading}>Login</Button>
 
-                                <Typography textAlign={'center'} marginTop={'1rem'}>OR</Typography>
-                                <Button fullWidth variant='text' onClick={toggleLogin} disabled={isLoading}>Sign up</Button>
+
+                                <Box textAlign={'end'} marginTop={'0.7rem'}>
+                                    <Typography sx={{ display: 'inline', fontSize: '14px' }}>
+                                        Don't have an account?
+                                    </Typography>
+                                    <Typography sx={{ display: 'inline', color: '#318CE7', cursor: 'pointer', fontWeight: '600' }} onClick={toggleLogin}> Register</Typography>
+                                </Box>
+
                             </form>
                         </Box>
 
@@ -229,10 +236,8 @@ function login() {
 
                         // Sign Up 
                         <> {/* This Symbole is known as fargments*/}
-                            <Tooltip title={'Back to Login'}>
-                                <ArrowBackIcon sx={{ position: 'absolute', top: '15px', left: '15px', cursor: 'pointer', }} onClick={toggleLogin} disabled={isLoading} />
-                            </Tooltip>
-                            <Typography variant='h4' textAlign={'center'}>Sign Up</Typography>
+
+                            <Typography sx={{ marginBottom: '1rem', fontWeight: '600' }} variant='h4' textAlign={'center'}>Sign Up</Typography>
                             <form
                                 style={{
                                     width: '100%',
@@ -380,8 +385,13 @@ function login() {
 
                                 <Button sx={{ marginTop: '1rem' }} variant='contained' color='primary' type='submit' fullWidth disabled={isLoading}>Sign Up</Button>
 
-                                {/* <Typography textAlign={'center'} margin={'1rem'}>OR</Typography> */}
-                                {/* <Button sx={{ width: '0', height: '0' }} variant='text' onClick={toggleLogin} disabled={isLoading}>Login</Button> */}
+                                <Box textAlign={'end'} marginTop={'0.7rem'}>
+                                    <Typography sx={{ display: 'inline', fontSize: '14px', marginTop: '1rem' }}>
+                                        Have an Account?
+                                    </Typography>
+                                    <Typography sx={{ display: 'inline', color: '#318CE7', cursor: 'pointer', fontWeight: '600' }} onClick={toggleLogin}> Login Here</Typography>
+                                </Box>
+
                             </form>
                         </>
                     )}
