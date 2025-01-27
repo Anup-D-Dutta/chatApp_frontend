@@ -86,7 +86,7 @@ const DeleteChat = ({ dispatch, deleteChatAnchor }) => {
                     </>
                 ) : (
                     <>
-                        <DeleteIcon /> <Typography>Delete Chat</Typography>
+                        <DeleteIcon /> <Typography>Delete User</Typography>
                     </>
                 )}
             </Stack>

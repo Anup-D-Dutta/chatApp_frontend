@@ -1,0 +1,13 @@
+.emoji-picker-react {
+    --epr-scrollbar-color: gray;
+    --epr-scrollbar-width: 3px;
+  }
+  
+  .emoji-picker-react::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  .emoji-picker-react::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 3px;
+  }

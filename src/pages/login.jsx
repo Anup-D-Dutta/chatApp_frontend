@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { AppBar, Avatar, Box, Button, Container, formControlClasses, IconButton, Paper, Stack, TextField, Toolbar, Tooltip, Typography } from '@mui/material'
-import { ArrowBack as ArrowBackIcon, CameraAlt as CameraAltIcon } from '@mui/icons-material'
+import { Email as EmailIcon, Password as PasswordIcon, ArrowBack as ArrowBackIcon, CameraAlt as CameraAltIcon } from '@mui/icons-material'
 import { VisuallyHiddenInput } from '../components/styles/styleComponents';
 import { useFileHandler, useInputValidation, useStrongPassword } from '6pp';
 import { usernameValidator } from '../utils/validators';
@@ -151,6 +151,7 @@ function login() {
                         // background: 'rgba(0, 0, 0, 0.5)',
 
                         backgroundColor: 'rgba(0,0,0,0.2)', // Transparent background color
+
                         // backdropFilter: 'blur(3px)', // Apply blur effect
                     }}
                 >
@@ -158,7 +159,7 @@ function login() {
                     {isLogin ? (
                         <Box> {/* <> </> This Symbole is known as fargments*/}
                             {/* <img src={assets.chat_icon2} /> */}
-                            <Typography color='white' variant='h4' textAlign={'center'} fontWeight={'600'}>Login</Typography>
+                            <Typography color='white' variant='h4' textAlign={'center'} fontWeight={'600'}>Welcome Back</Typography>
                             <form
                                 style={{
                                     marginTop: '1rem',
@@ -167,6 +168,8 @@ function login() {
                                 onSubmit={handleLogin}
 
                             >
+                                {/* <EmailIcon sx={{ margin: '2rem 0 0 0', position: 'absolute' }} /> */}
+
                                 <TextField
                                     required
                                     fullWidth
@@ -180,7 +183,7 @@ function login() {
                                         borderBottom: '1px solid gray',
                                         outline: "none",
                                         input: { color: 'white' },
-                                        label: { color: 'white' },
+                                        label: { color: 'white', },
                                         "& .MuiOutlinedInput-root": {
                                             borderRadius: "12px", // Adjust the border radius
                                             "& fieldset": {
