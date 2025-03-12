@@ -1,97 +1,55 @@
-import {createContext, useContext, useMemo } from "react";
-import io from "socket.io-client"
-import { API_URL } from "../constants/config";
-
-
-const SocketContext = createContext();
-
-const getSocket= () =>  useContext(SocketContext);
-
-const SocketProvider = ({children}) => {
-
-const socket = useMemo(() => 
-    io(API_URL, 
-        {withCredentials: true}),
-        []
-    );
-
-
-    return(
-        <SocketContext.Provider value={socket}>
-            {children}
-        </SocketContext.Provider>
-    )
-}
-
-export{SocketProvider, getSocket}
-
-
-
-// import { createContext, useContext, useMemo, useEffect } from "react";
-// import io from "socket.io-client";
+// import {createContext, useContext, useMemo } from "react";
+// import io from "socket.io-client"
 // import { API_URL } from "../constants/config";
+
 
 // const SocketContext = createContext();
 
-// const getSocket = () => useContext(SocketContext);
+// const getSocket= () =>  useContext(SocketContext);
 
-// const SocketProvider = ({ children }) => {
-//     const socket = useMemo(() => {
-//         const socketInstance = io(API_URL, {
-//             withCredentials: true,
-//             transports: ['websocket'], // Ensure WebSocket transport is preferred
-//         });
-//         return socketInstance;
-//     }, [API_URL]);
+// const SocketProvider = ({children}) => {
 
-//     useEffect(() => {
-//         socket.on('connect_error', (error) => {
-//             console.error('Socket connection error:', error);
-//         });
+// const socket = useMemo(() => 
+//     io(API_URL, 
+//         {withCredentials: true}),
+//         []
+//     );
 
-//         return () => {
-//             socket.disconnect(); // Clean up socket connection
-//         };
-//     }, [socket]);
 
-//     return (
+//     return(
 //         <SocketContext.Provider value={socket}>
 //             {children}
 //         </SocketContext.Provider>
-//     );
-// };
+//     )
+// }
 
-// export { SocketProvider, getSocket };
-
-
+// export{SocketProvider, getSocket}
 
 
 
+import { createContext, useContext, useMemo } from "react";
+import { io } from "socket.io-client";
+import { API_URL } from "../constants/config";
 
-// import { createContext, useContext, useEffect, useState } from "react";
-// import io from "socket.io-client";
+const SocketContext = createContext();
 
-// const SocketContext = createContext();
+const getSocket = () => useContext(SocketContext);
 
-// const getSocket = () => useContext(SocketContext);
+const SocketProvider = ({ children }) => {
+    const socket = useMemo(() => 
+        io(API_URL, {
+            withCredentials: true,
+            transports: ["websocket", "polling"], // ✅ Ensures WebSockets work on Vercel
+        }), 
+        [] // ✅ Ensures socket instance is created only once
+    );
 
-// const SocketProvider = ({ children }) => {
-//   const [socket, setSocket] = useState(null);
+    return (
+        <SocketContext.Provider value={socket}>
+            {children}
+        </SocketContext.Provider>
+    );
+};
 
-//   useEffect(() => {
-//     const newSocket = io(server, { withCredentials: true });
-//     setSocket(newSocket);
-    
-//     return () => {
-//       newSocket.close();
-//     };
-//   }, []);
+export { SocketProvider, getSocket };
 
-//   return (
-//     <SocketContext.Provider value={socket}>
-//       {children}
-//     </SocketContext.Provider>
-//   );
-// };
-
-// export { SocketProvider,  getSocket};
