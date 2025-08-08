@@ -59,9 +59,9 @@ const api = createApi({
             invalidatesTags: ['Chat'],
         }),
         chatDetails: builder.query({
-            query: ({ chatId, populate = false }) => {
+            query: ({ name, chatId, populate = false }) => {
 
-                let url = `chat/${chatId}`;
+                let url = `chat/${name || chatId}`;
                 if (populate) url += '?populate=true';
 
                 return {

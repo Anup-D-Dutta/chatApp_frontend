@@ -22,12 +22,7 @@ const initialState = {
   newMessageAlert: getOrSaveFromStorage({
     key: NEW_MESSAGE_ALERT,
     get: true,
-  }) || [
-    {
-      chatId: "",
-      count: 0,
-    },
-  ],
+  }) || [],
 };
 
 const chatSlice = createSlice({
@@ -44,14 +39,23 @@ const chatSlice = createSlice({
       const index = state.newMessageAlert.findIndex(
         (item) => item.chatId === action.payload.chatId
       );
-
-      if (index !== -1) {
-        state.newMessageAlert[index].count += 1;
+      if (action.payload.reset) {
+        if (index !== -1) {
+          state.newMessageAlert[index].count = 0;
+        }
+        // If not found, do nothing
       } else {
-        state.newMessageAlert.push({
-          chatId: action.payload.chatId,
-          count: 1,
-        });
+        if (index !== -1) {
+          state.newMessageAlert[index].count =
+            typeof state.newMessageAlert[index].count === 'number'
+              ? state.newMessageAlert[index].count + 1
+              : 1;
+        } else {
+          state.newMessageAlert.push({
+            chatId: action.payload.chatId,
+            count: 1,
+          });
+        }
       }
     },
   },

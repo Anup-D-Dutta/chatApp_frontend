@@ -1,221 +1,127 @@
-import React, { Suspense, useState, lazy } from 'react'
-import { AppBar, Box, Toolbar, Typography, IconButton, Tooltip, Backdrop, Badge } from '@mui/material'
-import { navyBlue } from '../../constants/color';
-import { Menu as MenuIcon, Search as SearchIcon, Add as AddIcon, Group as GroupIcon, Logout as LogoutIcon, Notifications as NotificationsIcon, Brightness1 } from '@mui/icons-material';
+import React, { Suspense, lazy } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { userNotExists } from '../../redux/reducers/auth';
-// import SearchDialog from '../specific/Search'
-import { API_URL } from '../../constants/config';
+import {FaBars} from 'react-icons/fa';
+import { AiOutlineLogout } from "react-icons/ai";
+import {
+  HiOutlineSearch,
+  HiOutlinePlus,
+  HiOutlineBell,
+} from 'react-icons/hi';
 import { setIsMobile, setIsNotification, setIsSearch, setIsNewGroup } from '../../redux/reducers/misc';
+import { userNotExists } from '../../redux/reducers/auth';
 import { resetNotification } from '../../redux/reducers/chat';
+import { API_URL } from '../../constants/config';
 import { assets } from '../../assets/assets';
-
-
 
 const SearchDialog = lazy(() => import('../specific/Search'));
 const NotificationDialog = lazy(() => import('../specific/Notifications'));
 const NewGroupDialog = lazy(() => import('../specific/NewGroup'));
 
-
 const Header = () => {
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
 
   const { isSearch, isNotification, isNewGroup } = useSelector((state) => state.misc);
-
   const { notificationCount } = useSelector((state) => state.chat);
 
-  // console.log(notificationCount)
-
-  // const [isNewGroup, setisNewGroup] = useState(false)
-
-
-
   const handleMobile = () => {
-    dispatch(setIsMobile(true))
-    setIsMobile(true);
-  }
+    dispatch(setIsMobile(true));
+  };
 
   const openSearch = () => {
-    // setisSearch((prev) => !prev);
-    dispatch(setIsSearch(true))
-    // setisSearch(true);
-  }
+    dispatch(setIsSearch(true));
+  };
 
   const openNewGroup = () => {
-    // setisNewGroup((prev) => !prev);
     dispatch(setIsNewGroup(true));
-  }
+  };
 
-  const opennotification = () => {
+  const openNotification = () => {
     dispatch(setIsNotification(true));
     dispatch(resetNotification());
-
-  }
-
-  //  Group Manage page
-  // const navigateToGroup = () => navigate('/group');
-
+  };
 
   const logoutHandler = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/api/v1/user/logout`,
-        { withCredentials: true });
-
-      dispatch(userNotExists())
-      toast.success(data.message)
+      const { data } = await axios.get(`${API_URL}/api/v1/user/logout`, { withCredentials: true });
+      dispatch(userNotExists());
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
     }
-    catch (error) {
-
-      toast.error(error?.response?.data?.message || "Something went wrong")
-
-    }
-  }
-
-
-
+  };
 
   return (
-
     <>
-
-      <Box sx={{ flexGrow: 1 }} height={'4rem'} >
-
-        <AppBar position='static'
-          sx={{
-            bgcolor: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(5px)',
-          }}>
-
-          <Toolbar>
-
-            <Typography sx={{
-              fontSize: '1.8rem', display: { xs: 'none', sm: 'block' }
-            }}>
-              <span style={{
-                fontWeight: '600',
-                fontSize: '2rem',
-                background: 'linear-gradient(16deg, #4b90ff, #ff5546)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                T
-              </span>
-              alk
-              <span
-                style={{
-                  fontWeight: '600',
-                  fontSize: '2rem',
-                  background: 'linear-gradient(16deg, #4b90ff, #ff5546)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                S
-              </span>
-              ync
-              <img style={{
-                margin: '0 0 8px 5px', width: '2rem', filter: 'invert(15%) sepia(0%) saturate(107%) hue-rotate(130deg) brightness(95%) contrast(80%)'
-              }}
-                src={assets.chat_icon2} alt="" />
-            </Typography>
-
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-
-              <IconButton color='inherit' onClick={handleMobile}>
-                <MenuIcon />
-              </IconButton>
-
-            </Box>
-
-            <Box sx={{ flexGrow: 1, }} />
-
-            <Box>
-
-              {/* Search Section */}
-              <IconBtn title={'Search'} icon={<SearchIcon />} onClick={openSearch} />
-
-              {/* Create Group Section */}
-              <IconBtn title={'New Group'} icon={<AddIcon />} onClick={openNewGroup} />
-
-              {/* Group Manage */}
-              {/* <IconBtn title={'Manage Groups'} icon={<GroupIcon />} onClick={navigateToGroup} /> */}
-
-              {/* Notification */}
-              <IconBtn title={'Notifications'} icon={<NotificationsIcon />} onClick={opennotification} value={notificationCount} />
-
-              {/* Logout Section */}
-              <IconBtn title={'Logout'} icon={<LogoutIcon />} onClick={logoutHandler} />
-
-
-
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </Box >
-
-
-      {/* Search */}
-      {
-        isSearch && (
-          <Suspense
-            fallback={<Backdrop open />}>
-            <SearchDialog
-              open={isSearch}
+      <header className="bg-black/90 bg-opacity-90 backdrop-blur-md h-16 px-4 flex items-center justify-between shadow-md w-full">
+        {/* Logo + Brand */}
+        <div className="flex items-center gap-2">
+          {/* Visible on sm and up */}
+          <div className="flex items-center text-white text-xl md:text-2xl font-bold w-full">
+            <span className="bg-gradient-to-r from-blue-500 to-red-500 text-transparent bg-clip-text">T</span>alk
+            <span className="bg-gradient-to-r from-blue-500 to-red-500 text-transparent bg-clip-text">S</span>ync
+            <img
+              src={assets.chat_icon2}
+              alt="logo"
+              className="w-6 md:w-8 ml-2 mb-1 filter invert-[15%] sepia-0 saturate-[107%] hue-rotate-[130deg] brightness-[95%] contrast-[80%]"
             />
-          </Suspense>)
-      }
+          </div>
+        </div>
 
-      {/* Notification  */}
-      {
-        isNotification &&
-        <Suspense
-          fallback={<Backdrop open />}
-        >
+        {/* Mobile Menu Icon - Visible only on small screens */}
+        {/* <div className="sm:hidden flex items-center">
+          <IconBtn title="Menu" icon={<FaBars color="white" />} onClick={handleMobile} />
+        </div> */}
+
+        {/* Action Icons */}
+        <div className="flex gap-3 sm:gap-5 text-white items-center ml-auto">
+          <IconBtn title="Search" icon={<HiOutlineSearch  />} onClick={openSearch} />
+          <IconBtn title="New Group" icon={<HiOutlinePlus />} onClick={openNewGroup} />
+          <IconBtn
+            title="Notifications"
+            icon={<HiOutlineBell />}
+            onClick={openNotification}
+            value={notificationCount}
+          />
+          <IconBtn title="Logout" icon={<AiOutlineLogout />} onClick={logoutHandler} />
+        </div>
+      </header>
+
+      {/* Dialogs */}
+      {isSearch && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black bg-opacity-50 z-50" />}>
+          <SearchDialog open={isSearch} />
+        </Suspense>
+      )}
+      {isNotification && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black bg-opacity-50 z-50" />}>
           <NotificationDialog />
         </Suspense>
-      }
-
-      {/* New Group */}
-      {
-        isNewGroup &&
-        <Suspense
-          fallback={<Backdrop open />}
-        >
+      )}
+      {isNewGroup && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black bg-opacity-50 z-50" />}>
           <NewGroupDialog />
         </Suspense>
-      }
-
-
+      )}
     </>
   );
 };
 
-// Here we create a component(IconBtn)
+// Icon Button Component
 const IconBtn = ({ title, icon, onClick, value }) => {
   return (
-
-    <Tooltip title={title}>
-      <IconButton color='inherit' size='large' onClick={onClick}>
-        {
-          value ? (<Badge badgeContent={value} color="error"> {icon}</Badge>) : (icon)
-          // icon
-        }
-
-      </IconButton>
-    </Tooltip>
+    <div className="relative group cursor-pointer" onClick={onClick} title={title}>
+      {value > 0 && (
+        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full z-10">
+          {value}
+        </span>
+      )}
+      <div className="text-lg sm:text-xl">{icon}</div>
+    </div>
   );
 };
 
-
-
-
-export default Header
-
-
-
+export default Header;

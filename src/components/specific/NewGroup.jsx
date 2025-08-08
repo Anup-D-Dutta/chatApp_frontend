@@ -1,22 +1,20 @@
-import React, { useState } from 'react'
-import { Dialog, DialogTitle, InputAdornment, Stack, TextField, ListItem, Typography, Avatar, Button, Box, Skeleton } from '@mui/material'
-import { sampleUsers } from '../../constants/sampleData'
-import UserItem from '../Shared/UserItem'
-import { useInputValidation } from '6pp'
-import { useDispatch, useSelector } from 'react-redux'
-import { useAvailableFriendsQuery, useNewGroupMutation } from '../../redux/api/api'
-import { useAsyncMutation, useErrors } from '../../hooks/hook'
-import { setIsNewGroup } from '../../redux/reducers/misc'
-import toast from 'react-hot-toast'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useAvailableFriendsQuery, useNewGroupMutation } from '../../redux/api/api';
+import { useAsyncMutation, useErrors } from '../../hooks/hook';
+import { setIsNewGroup } from '../../redux/reducers/misc';
+import { useInputValidation } from '6pp';
+import UserItem from '../Shared/UserItem';
 
 const NewGroup = () => {
-
-  const { isNewGroup } = useSelector((state) => state.misc)
+  const { isNewGroup } = useSelector((state) => state.misc);
   const dispatch = useDispatch();
 
   const { isError, isLoading, error, data } = useAvailableFriendsQuery();
-
   const [newGroup, isLoadingNewGroup] = useAsyncMutation(useNewGroupMutation);
+  const groupName = useInputValidation('');
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const submitHandler = async () => {
     if (!groupName.value) {
@@ -29,120 +27,92 @@ const NewGroup = () => {
     }
 
     newGroup("Creating New Group", { name: groupName.value, members: selectedMembers });
-
   };
-
-
-  // Initialize the hook with a rule (for example, the field cannot be empty)
-  const groupName = useInputValidation('');
-
-  const [selectedMembers, setSelectedMembers] = useState([]);
-
-  console.log(data)
-
-  const errors = [
-    {
-      isError,
-      error,
-    }
-  ]
-
-  useErrors(errors)
-
 
   const selectMemberHandler = (id) => {
-
     setSelectedMembers((prev) =>
-      prev.includes(id) ? prev.filter((currentElement) => currentElement !== id) :
-        [...prev, id]
+      prev.includes(id)
+        ? prev.filter((current) => current !== id)
+        : [...prev, id]
     );
   };
-  // console.log(selectedMembers);
 
   const closeHandler = () => {
-    dispatch(setIsNewGroup(false))
-  }
+    dispatch(setIsNewGroup(false));
+  };
+
+  useErrors([{ error, isError }]);
 
   return (
-    <Dialog open={isNewGroup} onClose={closeHandler}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'rgba(0,0,0,0.1)', // Transparent background color
-          backdropFilter: 'blur(1px)', // Apply blur effect
-          boxShadow: 2,
-          '&::-webkit-scrollbar': {
-            width: '4px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'gray',
-            borderRadius: '4px',
-          },
-        },
-      }}
-    >
-      <Box
-        sx={{
-          bgcolor: 'rgba(0,0,0,0.1)', // Slightly transparent background inside the dialog
-          backdropFilter: 'blur(1px)', // Additional blur effect
-          borderRadius: 2,
-        }}
-      >
-        <Stack p={{ xs: '1rem', sm: '3rem' }} width={'25rem'} spacing={'2rem'}>
-          <DialogTitle color='white' textAlign={'center'} variant='h4'>New Groups</DialogTitle>
+    <>
+      {isNewGroup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="bg-white/10 backdrop-blur-md text-white w-full max-w-md p-6 rounded-lg shadow-lg max-h-[85vh] overflow-y-auto relative border border-white/20">
+            {/* Close button */}
+            <button
+              onClick={closeHandler}
+              className="absolute top-2 right-3 text-white hover:text-gray-300 text-xl"
+            >
+              ✕
+            </button>
 
-          <TextField
-            label='Group Name'
-            value={groupName.value}
-            onChange={groupName.changeHandler}
-            sx={{
-              backgroundColor: 'rgba(0,0,0,0.1)', // TextField background with transparency
-              border: '1px solid gray',
-              borderRadius: '0.6rem',
-              // color: 'white',
-              input: { color: 'white' },
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px", // Adjust the border radius
-                "& fieldset": {
-                  borderRadius: "0.4rem",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "gray", // Optional: Customize the focus color
-                },
-              },
-            }}
-            InputLabelProps={{
-              style: { color: 'white', },
-            }}
-          />
+            <h2 className="text-2xl font-bold text-center mb-6">New Group</h2>
 
-          <Typography color='white' variant='body1'>Members</Typography>
-
-          <Stack>
-            {isLoading ? (<Skeleton />) : (data?.friends?.map((i) => (
-              <UserItem
-                user={i}
-                key={i._id}
-                handler={selectMemberHandler}
-                isAdded={selectedMembers.includes(i._id)}
-              // handlerIsLoasding={isLoadingSendFriendRequest}
+            {/* Group Name Input */}
+            <div className="mb-4">
+              <label htmlFor="group-name" className="block mb-2 text-white">
+                Group Name
+              </label>
+              <input
+                id="group-name"
+                type="text"
+                value={groupName.value}
+                onChange={groupName.changeHandler}
+                placeholder="Enter group name"
+                className="w-full px-4 py-2 bg-white/20 text-white placeholder-white/80 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50"
               />
-            ))
-            )}
-          </Stack>
+            </div>
 
-          <Stack direction={'row'} justifyContent={'space-evenly'} >
-            <Button variant='text' color='error' size='large' onClick={closeHandler}>Cancel</Button>
-            <Button variant='contained' size='large' onClick={submitHandler} disabled={isLoadingNewGroup}>Create</Button>
+            {/* Members */}
+            <div className="mb-2">
+              <h3 className="text-white text-lg mb-2">Members</h3>
+              <div className="space-y-2">
+                {isLoading ? (
+                  <div className="w-full h-6 bg-white/30 rounded animate-pulse"></div>
+                ) : (
+                  data?.friends?.map((friend) => (
+                    <UserItem
+                      user={friend}
+                      key={friend._id}
+                      handler={selectMemberHandler}
+                      isAdded={selectedMembers.includes(friend._id)}
+                    />
+                  ))
+                )}
+              </div>
+            </div>
 
-          </Stack>
+            {/* Action Buttons */}
+            <div className="mt-6 flex justify-between">
+              <button
+                onClick={closeHandler}
+                className="px-6 py-2 rounded text-red-500 hover:text-white hover:bg-red-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitHandler}
+                disabled={isLoadingNewGroup}
+                className="px-6 py-2 rounded text-blue-700 hover:text-white hover:bg-blue-700 disabled:opacity-50"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
-        </Stack>
-      </Box>
-    </Dialog>
-  )
-}
-
-export default NewGroup
-
-
-
+export default NewGroup;

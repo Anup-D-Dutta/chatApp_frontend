@@ -1,144 +1,107 @@
-import React, { memo } from 'react'
-import { Dialog, DialogTitle, InputAdornment, Stack, TextField, ListItem, Typography, Avatar, Button, Box, Skeleton } from '@mui/material'
-import { sampleNotifications } from '../../constants/sampleData'
-import { useAcceptFriendRequestMutation, useGetNotificationsQuery } from '../../redux/api/api'
-import { useErrors } from '../../hooks/hook'
-import { useDispatch, useSelector } from 'react-redux'
-import { setIsNotification } from '../../redux/reducers/misc'
-import toast from 'react-hot-toast'
-
+import React, { memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useAcceptFriendRequestMutation, useGetNotificationsQuery } from '../../redux/api/api';
+import { setIsNotification } from '../../redux/reducers/misc';
+import { useErrors } from '../../hooks/hook';
 
 const Notifications = () => {
-
   const { isNotification } = useSelector((state) => state.misc);
-
   const dispatch = useDispatch();
 
   const { isLoading, data, error, isError } = useGetNotificationsQuery();
-
   const [acceptRequest] = useAcceptFriendRequestMutation();
 
-
-  const friendRequestHandler = async({ _id, accept }) => {
-
+  const friendRequestHandler = async ({ _id, accept }) => {
     try {
+      const res = await acceptRequest({ requestId: _id, accept });
 
-      const res = await acceptRequest({requestId: _id, accept})
+      dispatch(setIsNotification(false));
 
-      dispatch(setIsNotification(false))
-
-      if(res.data?.success){
+      if (res.data?.success) {
         console.log("Use SocketHere");
         toast.success(res.data.message);
-      }
-      else if(!res.data?.success){
+      } else if (!res.data?.success) {
         console.log("Use SocketHere");
         toast.success(res.data.message);
+      } else {
+        toast.error(res.data?.error || "Something went wrong");
       }
-      else{
-        toast.error(res.data?.error || "somthing went wrong")
-      }
-
     } catch (error) {
-      toast.error("somthing went wrong")
-
-      console.log(error)
+      toast.error("Something went wrong");
+      console.error(error);
     }
-
-
   };
 
-  const closeHandler = () => dispatch(setIsNotification(false))
-
+  const closeHandler = () => dispatch(setIsNotification(false));
   useErrors([{ error, isError }]);
 
   return (
-    <Dialog open={isNotification} onClose={closeHandler}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'rgba(0,0,0,0.1)', // Transparent background color
-          backdropFilter: 'blur(1px)', // Apply blur effect
-          boxShadow: 2,
-          '&::-webkit-scrollbar': {
-            width: '4px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'gray',
-            borderRadius: '4px',
-          },
-        },
-      }}
-    >
-      <Stack p={{ xs: '1rem', sm: '2rem' }} maxWidth={'25rem'} sx={{
-        bgcolor: 'rgba(0,0,0,0.1)', // Slightly transparent background inside the dialog
-        backdropFilter: 'blur(1px)', // Additional blur effect
-        borderRadius: 2,
-      }}>
-        <DialogTitle textAlign={'center'} color='white'>Notifications</DialogTitle>
+    <>
+      {isNotification && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="bg-white/10 backdrop-blur-md text-white w-full max-w-md p-6 rounded-lg shadow-lg max-h-[80vh] overflow-y-auto relative border border-white/20">
+            <button
+              onClick={closeHandler}
+              className="absolute top-2 right-2 text-white hover:text-gray-300 text-xl cursor-pointer"
+            >
+              ✕
+            </button>
 
-        <Box color={'white'}>
+            <h2 className="text-xl font-bold text-center mb-4">Notifications</h2>
 
-          {
-            isLoading ? <Skeleton /> : <>
-              {data?.allRequest?.length > 0 ? (
-                data?.allRequest.map(({ sender, _id }) => (
-                  <NotificationItem
-                    sender={sender}
-                    _id={_id}
-                    handler={friendRequestHandler}
-                    key={_id}
-                  />
-                ))
-              ) : (
-                <Typography color='white' textAlign={'center'}>0 Notifications</Typography>
-              )}
-            </>
-          }
-        </Box>
-      </Stack>
-    </Dialog>
-  )
-}
+            {isLoading ? (
+              <div className="w-full h-6 bg-white/30 rounded animate-pulse"></div>
+            ) : (
+              <div className="space-y-4">
+                {data?.allRequest?.length > 0 ? (
+                  data?.allRequest.map(({ sender, _id }) => (
+                    <NotificationItem
+                      key={_id}
+                      sender={sender}
+                      _id={_id}
+                      handler={friendRequestHandler}
+                    />
+                  ))
+                ) : (
+                  <p className="text-center text-white">0 Notifications</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 const NotificationItem = memo(({ sender, _id, handler }) => {
   const { name, avatar } = sender;
+
   return (
-    <ListItem >
-      <Stack
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'1rem'}
-        width={'100%'}
-      >
-        <Avatar src={avatar} />
-
-        <Typography
-          variant='body1'
-          sx={{
-            flexGrow: 1,
-            display: '-webkit-box',
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            width: '100%'
-          }}
+    <div className="flex items-center space-x-4 p-3 rounded-md  ">
+      <img
+        src={avatar}
+        alt={name}
+        className="w-10 h-10 rounded-full object-cover"
+      />
+      <p className="flex-grow truncate">{name}</p>
+      <div className="flex flex-row gap-2 sm:gap-1">
+        <button
+          onClick={() => handler({ _id, accept: true })}
+          className="px-3 py-1  text-green-400 rounded border-white/20 hover:bg-border-green-500 text-sm cursor-pointer"
         >
-          {`${name} send you a friend request.`}
-        </Typography>
-
-        <Stack direction={{
-          xs: 'column',
-          sm: 'row',
-        }}>
-          <Button onClick={() => handler({ _id, accept: true })}>Accept</Button>
-          <Button color='error' onClick={() => handler({ _id, accept: false })}>Reject</Button>
-
-        </Stack>
-
-      </Stack>
-    </ListItem>
-  )
+          Accept
+        </button>
+        <button
+          onClick={() => handler({ _id, accept: false })}
+          className="px-3 py-1 text-red-500 rounded cursor-pointer text-sm"
+        >
+          Reject
+        </button>
+      </div>
+    </div>
+  );
 });
 
-export default Notifications
+export default Notifications;

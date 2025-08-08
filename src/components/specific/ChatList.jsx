@@ -1,132 +1,90 @@
-
-
-
-
-import { React, useState, useRef } from 'react';
-import { Stack, TextField } from '@mui/material';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ChatItem from '../Shared/ChatItem';
 
 const ChatList = ({
     bg = 'rgba(0, 0, 0, 0.9)',
-    // backgroundImage: '',
     w = '100%',
     chats = [],
     chatId,
     onlineUsers = [],
-    newMessagesAlert = [{ chatId: "", count: 0 }],
+    newMessagesAlert = [{ chatId: '', count: 0 }],
     handleDeleteChat,
-
 }) => {
     const [isScrolling, setIsScrolling] = useState(false);
     const scrollTimeout = useRef(null);
+    const containerRef = useRef(null);
 
-    const handleScroll = () => {
+    const handleScroll = useCallback(() => {
         setIsScrolling(true);
 
-        // Clear timeout if it's already set
-        if (scrollTimeout.current) {
-            clearTimeout(scrollTimeout.current);
-        }
+        if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
 
-        // Set a timeout to hide the scrollbar after 1.5 seconds of inactivity
         scrollTimeout.current = setTimeout(() => {
             setIsScrolling(false);
         }, 1500);
-    };
-    return (
-        <Stack
-            onScroll={handleScroll}
-            bgcolor={bg}
-            width={w}
-            direction="column"
-            overflow="auto"
-            height="100%"
-            padding='0.4rem'
-            borderRight={'1px solid #2C2C2C'}
-            sx={{
-                backdropFilter: 'blur(5px)',
-                overflow: 'auto',
-                height: '100%',
-                '&::-webkit-scrollbar': {
-                    // width: '4px',
-                    width: isScrolling ? '3px' : '0px',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: 'gray',
-                    borderRadius: '4px',
-                },
+    }, []);
 
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => clearTimeout(scrollTimeout.current);
+    }, []);
+
+    return (
+        <div
+            ref={containerRef}
+            onScroll={handleScroll}
+            className={`flex flex-col h-full overflow-auto p-2 border-r border-gray-800 transition-all`}
+            style={{
+                backgroundColor: bg,
+                width: w,
+                backdropFilter: 'blur(5px)',
+                scrollbarWidth: isScrolling ? 'thin' : 'none', // Firefox
             }}
         >
-            {/* <TextField
-            label='Search...'
+            {/* Scrollbar styling scoped to this container */}
+            <style>
+                {`
+                    /* Webkit browsers (Chrome, Edge, Safari) */
+                    .chat-scroll::-webkit-scrollbar {
+                        width: ${isScrolling ? '3px' : '0px'};
+                        transition: width 0.3s ease;
+                    }
+                    .chat-scroll::-webkit-scrollbar-thumb {
+                        background-color: gray;
+                        border-radius: 4px;
+                    }
+                `}
+            </style>
 
-                sx={{
-                    // position: 'fixed',
-                    marginTop: '1rem',
-                    border: '1px solid gray',
-                    borderRadius: '2rem',
-                    input: { color: 'white' },
-                    label: { color: 'white' },
-                }}
-            /> */}
+            <div className="chat-scroll flex flex-col">
+                {chats.map((data, index) => {
+                    if (!data?._id) return null;
 
-            {chats.map((data, index) => {
-                // Ensure data object and required properties are defined
-                if (!data || !data._id) {
-                    return null; // Skip this iteration if data is undefined or missing an _id
-                }
+                    const { avatar, _id, name, groupChat = false, members = [], messages = [] } = data;
 
-                const {
-                    // avatar = [],  // Default to an empty array if avatar is missing
-                    avatar,
-                    _id,
-                    // name = "Unknown User", // Default name if missing
-                    name,
-                    groupChat = false,
-                    members, // Default to empty array if members are missing
-                    // members = [], // Default to empty array if members are missing
+                    const newMessageAlertData = newMessagesAlert.find(alert => alert.chatId === _id) || { count: 0 };
+                    const latestMessage = messages.length > 0 ? messages[messages.length - 1]?.content || '' : '';
 
-                } = data;
+                    const isOnline = members.some(member => onlineUsers.includes(member));
 
-                const newMessageAlert = newMessagesAlert.find(
-                    (alert) => alert.chatId === _id
-                );
-
-                // const isOnline = Array.isArray(members) && Array.isArray(onlineUsers)
-                //     ? members.some((member) => {
-                //         const memberId = typeof member === 'string' ? member : member._id;
-                //         return onlineUsers.some((onlineUser) => {
-                //             const onlineUserId = typeof onlineUser === 'string' ? onlineUser : onlineUser._id;
-                //             return onlineUserId === memberId;
-                //         });
-                //     })
-                //     : false;
-                // const isOnline = Array.isArray(members) && Array.isArray(onlineUsers)
-                //     ? members.some((member) => onlineUsers.includes(member._id || member))
-                //     : false;
-                const isOnline = Array.isArray(members) && Array.isArray(onlineUsers) && members.length > 0 && onlineUsers.length > 0
-                    ? members.some((member) => onlineUsers.includes(member))
-                    : false;
-
-
-
-                return (
-                    <ChatItem
-                        index={index}
-                        newMessageAlert={newMessageAlert}
-                        isOnline={isOnline}
-                        avatar={avatar}
-                        name={name}
-                        _id={_id}
-                        key={_id}
-                        groupChat={groupChat}
-                        sameSender={chatId === _id}
-                        handleDeleteChat={handleDeleteChat}
-                    />
-                );
-            })}
-        </Stack>
+                    return (
+                        <ChatItem
+                            key={_id}
+                            index={index}
+                            newMessageAlert={{ ...newMessageAlertData, latestMessage }}
+                            isOnline={isOnline}
+                            avatar={avatar}
+                            name={name}
+                            _id={_id}
+                            groupChat={groupChat}
+                            sameSender={chatId === _id}
+                            handleDeleteChat={handleDeleteChat}
+                            latestMessage={latestMessage}
+                        />
+                    );
+                })}
+            </div>
+        </div>
     );
 };
 

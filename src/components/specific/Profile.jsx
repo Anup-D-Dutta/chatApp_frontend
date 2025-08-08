@@ -1,60 +1,36 @@
-import { Avatar, Dialog, Stack, Typography } from '@mui/material'
-import React from 'react'
-import { Face as FaceIcon, AlternateEmail as UaerNmaeIcon, CalendarMonth as CalenderIcon } from '@mui/icons-material'
+import React from 'react';
+import { FaUser, FaAt, FaCalendarAlt } from 'react-icons/fa';
 import moment from 'moment';
-import { transformImage } from '../../lib/Features'
+import { transformImage } from '../../lib/Features';
 
 const Profile = ({ user }) => {
-    return (
-        // <Dialog>
-        <Stack spacing={'2rem'} direction={'column'} alignItems={'center'}
-            sx={{
-                bgcolor: 'rgba(0,0,0,0.1)', // Slightly transparent background inside the dialog
-                backdropFilter: 'blur(8px)', // Additional blur effect
-                borderRadius: 2,
-                border: '1px solid #1F1F1F',
-                height: '100%',
-                padding: '2rem',
-            }}
-        >
-            <Avatar
-                src={transformImage(user?.avatar?.url)}
-                sx={{
-                    width: 200,
-                    height: 200,
-                    objectFit: 'contain',
-                    marginBottom: '1rem',
-                    border: '5px solid white'
-                }}
-            />
-            <ProfileCard heading={"Bio"} text={user.bio} />
-            <ProfileCard heading={"Username"} text={user?.username} Icon={<UaerNmaeIcon />} />
-            <ProfileCard heading={"Name"} text={user?.name} Icon={<FaceIcon />} />
-            <ProfileCard heading={"Joined"} text={moment(user.createdAt).fromNow()} Icon={<CalenderIcon />} />
+  return (
+    <div
+      className="flex flex-col items-center gap-8 p-8 rounded-xl border border-[#1F1F1F] bg-black/10 backdrop-blur-md h-full"
+    >
+      <img
+        src={transformImage(user?.avatar?.url)}
+        alt="User Avatar"
+        className="w-52 h-52 rounded-full border-4 border-white object-cover mb-4"
+      />
 
-
-        </Stack>
-        // </Dialog> 
-    );
+      <ProfileCard heading="Bio" text={user?.bio || "No bio"} />
+      <ProfileCard heading="Username" text={user?.username} Icon={<FaAt />} />
+      <ProfileCard heading="Name" text={user?.name} Icon={<FaUser />} />
+      <ProfileCard heading="Joined" text={moment(user?.createdAt).fromNow()} Icon={<FaCalendarAlt />} />
+    </div>
+  );
 };
 
 const ProfileCard = ({ text, Icon, heading }) => (
-    <Stack
-        direction={'row'}
-        alignItems={'center'}
-        spacing={'1rem'}
-        color={'white'}
-        textAlign={'center'}
-    >
+  <div className="flex items-center text-white text-center gap-4">
+    {Icon && <div className="text-lg">{Icon}</div>}
 
-        {Icon && Icon}
-
-        <Stack>
-            <Typography variant='body1'>{text}</Typography>
-            <Typography color={'gray'} variant='caption'>{heading}</Typography>
-        </Stack>
-    </Stack>
-
+    <div className="text-left">
+      <p className="text-base">{text}</p>
+      <p className="text-gray-400 text-sm">{heading}</p>
+    </div>
+  </div>
 );
 
-export default Profile
+export default Profile;

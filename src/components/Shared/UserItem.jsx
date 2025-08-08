@@ -4,6 +4,7 @@ import { Avatar, IconButton, ListItem, Typography, Stack } from '@mui/material';
 import { Add as AddIcon, Remove as RemoveIcon } from '@mui/icons-material';
 import React, { memo } from 'react';
 import { transformImage } from '../../lib/Features';
+import { red } from '@mui/material/colors';
 
 const UserItem = ({
   styling = {}, // Default to an empty object
@@ -12,7 +13,7 @@ const UserItem = ({
   handlerIsLoading,
   isAdded = false
 }) => {
-  const { name, _id, avatar } = user;
+  const { name, _id, avatar, latestMessage, bio } = user;
 
   return (
     <ListItem>
