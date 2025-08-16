@@ -8,6 +8,7 @@ import axios from 'axios';
 import { API_URL } from '../constants/config';
 import { useDispatch } from 'react-redux';
 import { userExists } from '../redux/reducers/auth';
+import { clearChatState } from '../redux/reducers/chat';
 import toast from 'react-hot-toast';
 import { assets } from '../assets/assets';
 import { Link, useLocation } from 'react-router-dom';
@@ -48,17 +49,20 @@ function login() {
         }
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/user/login`, {
-                username: username.value,
-                password: password.value,
-            },
+            const { data } = await axios.post(`${API_URL}/api/v1/user/login`,
+                
+                {
+                    username: username.value,
+                    password: password.value,
+                },
                 config
             );
+            dispatch(clearChatState());
             dispatch(userExists(data.user));
             toast.success(data.message, { id: toastId, })
         }
         catch (error) {
-
+            console.error("Login error details:", error);
             const message = error.response?.data?.message || "Something went wrong";
             toast.error(String(message), { id: toastId });
         }
@@ -68,15 +72,71 @@ function login() {
     }
 
     // Sign up
+    // const handleSignUp = async (e) => {
+    //     e.preventDefault();
+
+    //     const toastId = toast.loading('Wait...');
+
+    //     setIsLoading(true)
+
+    //     const formData = new FormData();
+    //     formData.append("avatar", avatar.file);
+    //     formData.append("name", name.value);
+    //     formData.append("bio", bio.value);
+    //     formData.append("username", username.value);
+    //     formData.append("password", password.value);
+
+    //     const config = {
+    //         withCredentials: true,
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data'
+    //         }
+    //     }
+
+    //     try {
+    //         const { data } = await axios.post(`${API_URL}/api/v1/user/new`,
+    //             formData,
+    //             config,
+    //         )
+    //         // dispatch(userExists(true));
+    //         dispatch(userExists(data.user));
+    //         toast.success(data.message, {
+    //             id: toastId
+    //         });
+    //     } catch (error) {
+    //         const message = (error.response?.data?.message || "Something went wrong").toString();
+    //         if (message.includes("username")) {
+    //             username.setError("Username already exists");
+    //         }
+    //         toast.error(String(message), { id: toastId });
+    //     }
+    //     finally {
+    //         setIsLoading(false)
+    //     }
+
+    // }
+    // Sign up
     const handleSignUp = async (e) => {
         e.preventDefault();
 
-        const toastId = toast.loading('Wait...');
+        const toastId = toast.loading("Wait...");
+        setIsLoading(true);
 
-        setIsLoading(true)
+        // Ensure avatar.file is a File object
+        let avatarFile = avatar.file;
+        if (Array.isArray(avatarFile)) {
+            avatarFile = avatarFile[0]; // take the first file
+        }
 
+        if (!avatarFile) {
+            toast.error("Please select an avatar image", { id: toastId });
+            setIsLoading(false);
+            return;
+        }
+
+        // Prepare form data
         const formData = new FormData();
-        formData.append("avatar", avatar.file);
+        formData.append("avatar", avatarFile); // matches backend multer.single("avatar")
         formData.append("name", name.value);
         formData.append("bio", bio.value);
         formData.append("username", username.value);
@@ -85,32 +145,32 @@ function login() {
         const config = {
             withCredentials: true,
             headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
+                "Content-Type": "multipart/form-data",
+            },
+        };
 
         try {
-            const { data } = await axios.post(`${API_URL}/api/v1/user/new`,
+            const { data } = await axios.post(
+                `${API_URL}/api/v1/user/new`,
                 formData,
-                config,
-            )
-            // dispatch(userExists(true));
+                config
+            );
+
             dispatch(userExists(data.user));
-            toast.success(data.message, {
-                id: toastId
-            });
+            toast.success(data.message, { id: toastId });
         } catch (error) {
-            const message = (error.response?.data?.message || "Something went wrong").toString();
+            const message =
+                (error.response?.data?.message || "Something went wrong").toString();
+
             if (message.includes("username")) {
                 username.setError("Username already exists");
             }
-            toast.error(String(message), { id: toastId });
+            toast.error(message, { id: toastId });
+        } finally {
+            setIsLoading(false);
         }
-        finally {
-            setIsLoading(false)
-        }
+    };
 
-    }
 
     return (
 

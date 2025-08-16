@@ -12,9 +12,11 @@ import {
 } from 'react-icons/hi';
 import { setIsMobile, setIsNotification, setIsSearch, setIsNewGroup } from '../../redux/reducers/misc';
 import { userNotExists } from '../../redux/reducers/auth';
+import { clearChatState } from '../../redux/reducers/chat';
 import { resetNotification } from '../../redux/reducers/chat';
 import { API_URL } from '../../constants/config';
 import { assets } from '../../assets/assets';
+
 
 const SearchDialog = lazy(() => import('../specific/Search'));
 const NotificationDialog = lazy(() => import('../specific/Notifications'));
@@ -48,6 +50,7 @@ const Header = () => {
     try {
       const { data } = await axios.get(`${API_URL}/api/v1/user/logout`, { withCredentials: true });
       dispatch(userNotExists());
+      dispatch(clearChatState());
       toast.success(data.message);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong");

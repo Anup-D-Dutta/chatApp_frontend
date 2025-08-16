@@ -1,5 +1,4 @@
 
-
 import { createSlice } from '@reduxjs/toolkit';
 import { NEW_MESSAGE_ALERT } from '../../constants/event';
 
@@ -58,9 +57,19 @@ const chatSlice = createSlice({
         }
       }
     },
+    clearChatState: (state) => {
+      state.notificationCount = 0;
+      state.newMessageAlert = [];
+      localStorage.removeItem(`myApp_${NEW_MESSAGE_ALERT}`);
+    },
   },
 });
 
-export const { incrementNotification, resetNotification, setNewMessageAlert } =
-  chatSlice.actions;
+export const {
+  incrementNotification,
+  resetNotification,
+  setNewMessageAlert,
+  clearChatState,
+} = chatSlice.actions;
+
 export default chatSlice;

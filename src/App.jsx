@@ -28,12 +28,12 @@ const App = () => {
   const { user, loader } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/v1/user/me`, { withCredentials: true })
-      .then(({ data }) => dispatch(userExists(data.user)))
-      .catch(() => dispatch(userNotExists()));
-  }, [dispatch]);
+ useEffect(() => {
+  dispatch(userNotExists()); // reset immediately
+  axios.get(`${API_URL}/api/v1/user/me`, { withCredentials: true })
+    .then(({ data }) => dispatch(userExists(data.user)))
+    .catch(() => dispatch(userNotExists()));
+}, [dispatch]);
 
   return loader ? (
     <LayoutLoaders />
